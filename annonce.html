@@ -1,0 +1,2630 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annonces - Gis Community System</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            overflow-x: hidden;
+            background: #f0f9ff;
+            animation: fadeInPage 1s ease-out;
+        }
+
+        @keyframes fadeInPage {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Header avec menu burger */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #0ea5e9;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-image {
+            max-height: 50px;
+            width: auto;
+        }
+
+        /* Menu burger */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: #0c4a6e;
+            margin: 3px 0;
+            transition: 0.4s;
+            border-radius: 3px;
+        }
+
+        .menu-toggle.active .bar:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .menu-toggle.active .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active .bar:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a {
+            color: #0c4a6e;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav ul li a::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(14, 165, 233, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        nav ul li a:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        nav ul li a:hover {
+            background: rgba(14, 165, 233, 0.1);
+            color: #0ea5e9;
+        }
+
+        .nav-icon {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: ctaPulse 2s infinite;
+        }
+
+        @keyframes ctaPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(14, 165, 233, 0);
+            }
+        }
+
+        .nav-cta:hover {
+            background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
+            color: white !important;
+        }
+
+        /* Hero Section avec image */
+        .hero {
+            position: relative;
+            padding: 6rem 2rem;
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+            overflow: hidden;
+            background-image: url('TECH.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            animation: zoomBackground 20s infinite alternate;
+        }
+
+        @keyframes zoomBackground {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.1);
+            }
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+           
+            z-index: 0;
+        }
+
+        .hero h1, .hero p, .hero-cta {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: slideInLeft 1s ease-out, glow 3s infinite;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0ea5e9;
+            }
+            50% {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0ea5e9;
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+            animation: slideInRight 1s ease-out 0.3s both;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .hero-btn {
+            background: white;
+            color: #0ea5e9;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-btn.whatsapp {
+            background: #25D366;
+            color: white;
+        }
+
+        .hero-btn.whatsapp:hover {
+            background: #128C7E;
+        }
+
+        /* Carousel avec animations */
+        .carousel-container {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 2rem;
+            position: relative;
+        }
+
+        .carousel-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #0ea5e9;
+            margin-bottom: 2rem;
+            animation: fadeInScale 1s ease-out;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .carousel-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+            border-radius: 2px;
+            animation: lineWidth 2s infinite;
+        }
+
+        @keyframes lineWidth {
+            0%, 100% {
+                width: 100px;
+            }
+            50% {
+                width: 150px;
+            }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .carousel {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(14, 165, 233, 0.3);
+            animation: float 6s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+                box-shadow: 0 10px 40px rgba(14, 165, 233, 0.3);
+            }
+            50% {
+                transform: translateY(-10px);
+                box-shadow: 0 20px 50px rgba(14, 165, 233, 0.4);
+            }
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            display: block;
+            transition: transform 8s linear;
+        }
+
+        .carousel-slide:hover img {
+            transform: scale(1.1);
+        }
+
+        .carousel-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            color: white;
+            padding: 2rem;
+            transform: translateY(100%);
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-slide:hover .carousel-content {
+            transform: translateY(0);
+        }
+
+        .carousel-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            animation: slideInBottom 0.5s 0.2s both;
+        }
+
+        .carousel-content p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+            animation: slideInBottom 0.5s 0.3s both;
+        }
+
+        @keyframes slideInBottom {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .carousel-btn {
+            background: #0ea5e9;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            animation: slideInBottom 0.5s 0.4s both;
+        }
+
+        .carousel-btn:hover {
+            background: #0284c7;
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 1rem;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .carousel-nav button {
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #0c4a6e;
+            transition: all 0.3s ease;
+            pointer-events: all;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: navButtonPulse 2s infinite;
+        }
+
+        @keyframes navButtonPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .carousel-nav button:hover {
+            background: white;
+            transform: scale(1.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background: #0ea5e9;
+            transform: scale(1.5);
+            animation: dotPulse 1s infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 #0ea5e9;
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(14, 165, 233, 0.3);
+            }
+        }
+
+        /* Info Section avec chiffres animés */
+        .info-section {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 2rem;
+        }
+
+        .info-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #0ea5e9;
+            margin-bottom: 3rem;
+            animation: fadeInRotate 1s ease-out;
+        }
+
+        @keyframes fadeInRotate {
+            from {
+                opacity: 0;
+                transform: rotate(-5deg) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: rotate(0) scale(1);
+            }
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .info-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(14, 165, 233, 0.1);
+            transition: all 0.3s ease;
+            animation: cardAppear 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .info-card:nth-child(1) { animation-delay: 0.2s; }
+        .info-card:nth-child(2) { animation-delay: 0.4s; }
+        .info-card:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes cardAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(14, 165, 233, 0.2);
+        }
+
+        .info-icon {
+            font-size: 2.5rem;
+            color: #0ea5e9;
+            margin-bottom: 1.5rem;
+            width: 70px;
+            height: 70px;
+            background: #e0f2fe;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: iconRotate 10s infinite linear;
+        }
+
+        @keyframes iconRotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .info-card h3 {
+            color: #0c4a6e;
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .info-card p {
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .info-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #e0f2fe;
+        }
+
+        .stat {
+            text-align: center;
+            position: relative;
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #0ea5e9;
+            display: block;
+            animation: countUp 2s ease-out;
+            position: relative;
+            display: inline-block;
+        }
+
+        .stat-number::after {
+            content: '+';
+            font-size: 1.5rem;
+            color: #38bdf8;
+            position: absolute;
+            top: 0;
+            right: -15px;
+        }
+
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            color: #64748b;
+            display: block;
+            margin-top: 0.3rem;
+        }
+
+        /* Carte de l'Afrique avec statistiques */
+        .africa-section {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(14, 165, 233, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .africa-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #0ea5e9;
+            margin-bottom: 2rem;
+            animation: fadeInScale 1s ease-out;
+        }
+
+        .africa-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .africa-map {
+            position: relative;
+            text-align: center;
+        }
+
+        .africa-map svg {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            filter: drop-shadow(0 10px 20px rgba(14, 165, 233, 0.2));
+            animation: mapFloat 6s infinite ease-in-out;
+        }
+
+        @keyframes mapFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .africa-map path {
+            fill: #0ea5e9;
+            stroke: white;
+            stroke-width: 2;
+            transition: all 0.3s ease;
+        }
+
+        .africa-map path:hover {
+            fill: #0284c7;
+            transform: scale(1.02);
+        }
+
+        .africa-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .africa-stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.1);
+            transition: all 0.3s ease;
+            animation: statCardAppear 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+            text-align: center;
+        }
+
+        .africa-stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .africa-stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .africa-stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .africa-stat-card:nth-child(4) { animation-delay: 0.4s; }
+        .africa-stat-card:nth-child(5) { animation-delay: 0.5s; }
+        .africa-stat-card:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes statCardAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .africa-stat-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(14, 165, 233, 0.2);
+        }
+
+        .africa-stat-icon {
+            font-size: 2rem;
+            color: #0ea5e9;
+            margin-bottom: 1rem;
+        }
+
+        .africa-stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #0c4a6e;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .africa-stat-label {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        /* Search Section */
+        .search-section {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 2rem;
+        }
+
+        .search-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.1);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 4px 15px rgba(14, 165, 233, 0.1);
+            }
+            50% {
+                box-shadow: 0 8px 25px rgba(14, 165, 233, 0.2);
+            }
+        }
+
+        .search-container h2 {
+            color: #0ea5e9;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 2rem;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+            transform: scale(1.02);
+        }
+
+        .search-btn {
+            background: #0ea5e9;
+            color: white;
+            border: none;
+            padding: 0 2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .search-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .search-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .search-btn:hover {
+            background: #0284c7;
+        }
+
+        .search-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            background: #f1f5f9;
+            border: 2px solid #e2e8f0;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(14, 165, 233, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .filter-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .filter-btn.active {
+            background: #0ea5e9;
+            color: white;
+            border-color: #0ea5e9;
+            animation: filterPulse 2s infinite;
+        }
+
+        @keyframes filterPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 #0ea5e9;
+            }
+            50% {
+                box-shadow: 0 0 0 5px rgba(14, 165, 233, 0.3);
+            }
+        }
+
+        .filter-btn:hover:not(.active) {
+            background: #e2e8f0;
+            transform: translateY(-2px);
+        }
+
+        /* Announcements Grid */
+        .announcements {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 2rem;
+        }
+
+        .announcements h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #0ea5e9;
+            margin-bottom: 3rem;
+            animation: slideInTop 1s ease-out;
+        }
+
+        @keyframes slideInTop {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .announcements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .announcement-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.1);
+            transition: all 0.3s ease;
+            animation: cardSlideIn 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+
+        .announcement-card:nth-child(even) {
+            transform: translateX(50px);
+        }
+
+        @keyframes cardSlideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .announcement-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(14, 165, 233, 0.2);
+        }
+
+        .announcement-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .announcement-card:hover .announcement-image {
+            transform: scale(1.1);
+        }
+
+        .announcement-content {
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .announcement-category {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0ea5e9;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .announcement-card:hover .announcement-category {
+            background: #0ea5e9;
+            color: white;
+        }
+
+        .announcement-content h3 {
+            color: #0c4a6e;
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .announcement-content p {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .announcement-date {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .announcement-btn {
+            display: inline-block;
+            background: #0ea5e9;
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+
+        .announcement-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .announcement-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .announcement-btn:hover {
+            background: #0284c7;
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #0c4a6e 0%, #1e40af 100%);
+            color: white;
+            padding: 3rem 2rem 1rem;
+            margin-top: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-section {
+            animation: footerFade 1s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .footer-section:nth-child(1) { animation-delay: 0.2s; }
+        .footer-section:nth-child(2) { animation-delay: 0.4s; }
+        .footer-section:nth-child(3) { animation-delay: 0.6s; }
+        .footer-section:nth-child(4) { animation-delay: 0.8s; }
+
+        @keyframes footerFade {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .footer-section h3 {
+            color: #38bdf8;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #38bdf8;
+            transition: width 0.5s ease;
+        }
+
+        .footer-section:hover h3::after {
+            width: 100%;
+        }
+
+        .footer-section p {
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+
+        .footer-section ul li:hover {
+            transform: translateX(10px);
+        }
+
+        .footer-section ul li a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-section ul li a:hover {
+            color: #38bdf8;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            animation: socialBounce 3s infinite;
+        }
+
+        @keyframes socialBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .social-links a:hover {
+            background: #38bdf8;
+            transform: rotate(360deg) scale(1.2);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-contact-icon {
+            margin-right: 10px;
+            width: 16px;
+            text-align: center;
+        }
+
+        .newsletter {
+            margin-top: 1.5rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-form input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+        }
+
+        .newsletter-form input::placeholder {
+            color: #94a3b8;
+        }
+
+        .newsletter-form button {
+            background: #38bdf8;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .newsletter-form button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .newsletter-form button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .newsletter-form button:hover {
+            background: #0ea5e9;
+            transform: translateY(-2px);
+        }
+
+        /* Chatbot Styles avec animations */
+        .chatbot-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .chatbot-toggle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0;
+            overflow: hidden;
+            animation: togglePulse 2s infinite;
+        }
+
+        @keyframes togglePulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 #0ea5e9;
+            }
+            50% {
+                box-shadow: 0 0 0 15px rgba(14, 165, 233, 0.3);
+            }
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.2) rotate(360deg);
+        }
+
+        .chatbot-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .chatbot-notification {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background: #ff4757;
+            border-radius: 50%;
+            color: white;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+            animation: notificationPulse 1s infinite;
+        }
+
+        @keyframes notificationPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.3);
+            }
+        }
+
+        .chatbot-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chatbot-window.active {
+            display: flex;
+            animation: slideUp 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%);
+            padding: 15px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chatbot-header-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .chatbot-header-info h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .chatbot-header-info p {
+            margin: 5px 0 0;
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .chatbot-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .chatbot-message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+            word-wrap: break-word;
+            animation: messagePop 0.3s ease-out;
+        }
+
+        @keyframes messagePop {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .chatbot-message.bot {
+            background: #f0f9ff;
+            color: #0c4a6e;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .chatbot-message.user {
+            background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .chatbot-message.whatsapp-redirect {
+            background: #25D366;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .chatbot-message.whatsapp-redirect:hover {
+            background: #128C7E;
+        }
+
+        .chatbot-input-container {
+            padding: 15px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 10px;
+            background: #f8fafc;
+        }
+
+        .chatbot-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 25px;
+            outline: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .chatbot-input:focus {
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+
+        .chatbot-send {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%);
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chatbot-send:hover {
+            background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
+            transform: scale(1.1) rotate(15deg);
+        }
+
+        .chatbot-typing {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 10px 16px;
+            background: #f0f9ff;
+            border-radius: 18px;
+            align-self: flex-start;
+            width: 70px;
+        }
+
+        .chatbot-typing span {
+            width: 8px;
+            height: 8px;
+            background: #0ea5e9;
+            border-radius: 50%;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+
+        .chatbot-typing span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .chatbot-typing span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes typingAnimation {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        .chatbot-quick-questions {
+            padding: 15px 15px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            border-bottom: 1px solid #e2e8f0;
+            background: white;
+        }
+
+        .chatbot-quick-question {
+            background: #f1f5f9;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-quick-question:hover {
+            background: #e2e8f0;
+            color: #0c4a6e;
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            nav ul {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 400px;
+                height: 100vh;
+                background: white;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transition: right 0.3s ease;
+                box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+                z-index: 999;
+            }
+
+            nav ul.active {
+                right: 0;
+            }
+
+            nav ul li a {
+                font-size: 1.2rem;
+                padding: 1rem 2rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .hero-btn {
+                width: 80%;
+                max-width: 300px;
+            }
+
+            .carousel-content h3 {
+                font-size: 1.5rem;
+            }
+
+            .carousel-content p {
+                font-size: 1rem;
+            }
+
+            .announcements-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .search-btn {
+                padding: 1rem;
+            }
+
+            .carousel-nav button {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .logo-image {
+                max-height: 40px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .chatbot-container {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .chatbot-window {
+                width: 320px;
+                height: 450px;
+                right: -10px;
+            }
+            
+            .chatbot-toggle {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .chatbot-avatar {
+                width: 60px;
+                height: 60px;
+            }
+
+            .africa-container {
+                grid-template-columns: 1fr;
+            }
+
+            .africa-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .carousel-slide img {
+                height: 400px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .carousel-content {
+                padding: 1rem;
+            }
+
+            .carousel-content h3 {
+                font-size: 1.3rem;
+            }
+
+            .announcement-card {
+                margin: 0 1rem;
+            }
+
+            .stat-number {
+                font-size: 1.8rem;
+            }
+
+            .chatbot-window {
+                width: 280px;
+                right: -30px;
+            }
+            
+            .chatbot-toggle {
+                width: 55px;
+                height: 55px;
+            }
+            
+            .chatbot-avatar {
+                width: 55px;
+                height: 55px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header avec menu burger -->
+    <header>
+        <nav>
+            <a href="index.html" class="logo">
+                <img src="Gis Community System.png" alt="GIS Community System" class="logo-image">
+            </a>
+            
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            
+            <ul id="navMenu">
+                <li><a href="index.html" onclick="closeMenu()"><i class="fas fa-home nav-icon"></i>Accueil</a></li>
+                <li><a href="annonce.html" class="nav-cta" onclick="closeMenu()"><i class="fas fa-bullhorn nav-icon"></i>Annonce</a></li>
+                <li><a href="service.html" onclick="closeMenu()"><i class="fas fa-cogs nav-icon"></i>Service</a></li>
+                <li><a href="apropos.html" onclick="closeMenu()"><i class="fas fa-info-circle nav-icon"></i>À propos</a></li>
+                <li><a href="#contact" onclick="closeMenu()"><i class="fas fa-phone-alt nav-icon"></i>Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section avec image JHON.JPG -->
+    <section class="hero">
+        <h1>Annonces & Actualités</h1>
+        <p>Découvrez les dernières nouvelles, offres spéciales et annonces importantes de Gis Community System. Restez informé sur nos projets, promotions et événements à venir.</p>
+        <div class="hero-cta">
+            <button class="hero-btn" onclick="scrollToAnnouncements()">
+                <i class="fas fa-eye"></i> Voir les annonces
+            </button>
+            <button class="hero-btn whatsapp" onclick="openWhatsApp()">
+                <i class="fab fa-whatsapp"></i> Contactez-nous
+            </button>
+        </div>
+    </section>
+
+    <!-- Carousel -->
+    <section class="carousel-container">
+        <h2 class="carousel-title">Dernières Annonces en Vedette</h2>
+        <div class="carousel">
+            <div class="carousel-track" id="carouselTrack">
+                <!-- Slide 1 - Formation Femme en Graphic Design -->
+                <div class="carousel-slide">
+                    <img src="FORMA.JPG" alt="Formation Femme en Graphic Design">
+                    <div class="carousel-content">
+                        <h3>Formation Spéciale pour Femmes</h3>
+                        <p>Programme exclusif de formation en design graphique pour femmes. Développez vos compétences créatives et lancez votre carrière dans le digital !</p>
+                        <button class="carousel-btn" onclick="openWhatsApp()">S'inscrire</button>
+                    </div>
+                </div>
+                <!-- Slide 2 - Challenge App Afrique -->
+                <div class="carousel-slide">
+                    <img src="challenge.png" alt="Challenge App Afrique">
+                    <div class="carousel-content">
+                        <h3>GCS participe au Challenge App Afrique</h3>
+                        <p>Nous sommes fiers d'annoncer notre participation au prestigieux Challenge App Afrique 2026. Suivez notre parcours et soutenez-nous !</p>
+                        <button class="carousel-btn" onclick="openWhatsApp()">En savoir plus</button>
+                    </div>
+                </div>
+                <!-- Slide 3 - Promotion Spéciale -->
+                <div class="carousel-slide">
+                    <img src="TECH2.jpg" alt="Promotion Spéciale">
+                    <div class="carousel-content">
+                        <h3>Promotion Spéciale Printemps</h3>
+                        <p>Profitez de 30% de réduction sur tous nos services de développement web. Lancez votre projet digital maintenant !</p>
+                        <button class="carousel-btn" onclick="openWhatsApp()">En savoir plus</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="carousel-nav">
+                <button class="carousel-prev" onclick="prevSlide()">❮</button>
+                <button class="carousel-next" onclick="nextSlide()">❯</button>
+            </div>
+            
+            <div class="carousel-dots">
+                <button class="carousel-dot active" onclick="goToSlide(0)"></button>
+                <button class="carousel-dot" onclick="goToSlide(1)"></button>
+                <button class="carousel-dot" onclick="goToSlide(2)"></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Section avec chiffres animés -->
+    <section class="info-section">
+        <h2>Pourquoi Suivre Nos Annonces ?</h2>
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <h3>Informations en Temps Réel</h3>
+                <p>Restez à jour avec les dernières nouvelles de Gis Community System. Nos annonces vous informent en temps réel sur les promotions, nouveaux services et événements importants.</p>
+                <div class="info-stats">
+                    <div class="stat">
+                        <span class="stat-number" id="stat1" data-target="50">0</span>
+                        <span class="stat-label">Annonces mensuelles</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="stat2" data-target="24">0</span>
+                        <span class="stat-label">Mise à jour</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-tags"></i>
+                </div>
+                <h3>Opportunités Exclusives</h3>
+                <p>Bénéficiez d'offres spéciales et de promotions réservées à nos followers. Les annonces sont votre porte d'entrée vers des réductions et avantages uniques.</p>
+                <div class="info-stats">
+                    <div class="stat">
+                        <span class="stat-number" id="stat3" data-target="30">0</span>
+                        <span class="stat-label">Économie moyenne</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="stat4" data-target="100">0</span>
+                        <span class="stat-label">Promotions/an</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h3>Événements & Formations</h3>
+                <p>Ne manquez aucun webinaire, atelier ou événement important. Nos annonces vous tiennent informés des opportunités d'apprentissage et de networking.</p>
+                <div class="info-stats">
+                    <div class="stat">
+                        <span class="stat-number" id="stat5" data-target="12">0</span>
+                        <span class="stat-label">Événements/an</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="stat6" data-target="500">0</span>
+                        <span class="stat-label">Participants</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Carte de l'Afrique avec statistiques -->
+    <section class="africa-section">
+        <h2>L'Afrique Numérique en Chiffres</h2>
+        <div class="africa-container">
+            <div class="africa-map">
+                <svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Carte simplifiée de l'Afrique -->
+                    <path d="M400,100 L500,150 L550,250 L500,350 L550,450 L500,550 L400,600 L300,550 L250,450 L200,350 L250,250 L300,150 L400,100" fill="#0ea5e9" stroke="white" stroke-width="3"/>
+                    <path d="M350,200 L400,180 L420,220 L400,260 L360,240 L350,200" fill="#38bdf8" stroke="white" stroke-width="2"/>
+                    <path d="M420,300 L460,280 L480,320 L460,360 L420,340 L420,300" fill="#38bdf8" stroke="white" stroke-width="2"/>
+                    <path d="M320,400 L360,380 L380,420 L360,460 L320,440 L320,400" fill="#38bdf8" stroke="white" stroke-width="2"/>
+                    <circle cx="400" cy="300" r="5" fill="white" stroke="#0284c7" stroke-width="2"/>
+                </svg>
+            </div>
+            <div class="africa-stats">
+                <div class="africa-stat-card">
+                    <div class="africa-stat-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <span class="africa-stat-number">650M+</span>
+                    <span class="africa-stat-label">Utilisateurs de mobile en Afrique</span>
+                </div>
+                <div class="africa-stat-card">
+                    <div class="africa-stat-icon"><i class="fas fa-globe"></i></div>
+                    <span class="africa-stat-number">500M+</span>
+                    <span class="africa-stat-label">Utilisateurs internet</span>
+                </div>
+                <div class="africa-stat-card">
+                    <div class="africa-stat-icon"><i class="fas fa-code"></i></div>
+                    <span class="africa-stat-number">700K+</span>
+                    <span class="africa-stat-label">Développeurs en Afrique</span>
+                </div>
+                <div class="africa-stat-card">
+                    <div class="africa-stat-icon"><i class="fas fa-rocket"></i></div>
+                    <span class="africa-stat-number">600+</span>
+                    <span class="africa-stat-label">Hubs technologiques</span>
+                </div>
+                <div class="africa-stat-card">
+                    <div class="africa-stat-icon"><i class="fas fa-chart-line"></i></div>
+                    <span class="africa-stat-number">$115B</span>
+                    <span class="africa-stat-label">Économie numérique d'ici 2025</span>
+                </div>
+                <div class="africa-stat-card">
+                    <div class="africa-stat-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <span class="africa-stat-number">54</span>
+                    <span class="africa-stat-label">Pays africains connectés</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="search-container">
+            <h2>Rechercher une Annonce</h2>
+            <form class="search-form" onsubmit="searchAnnouncements(event)">
+                <input type="text" class="search-input" placeholder="Rechercher par mot-clé..." id="searchInput">
+                <button type="submit" class="search-btn">
+                    <i class="fas fa-search"></i> Rechercher
+                </button>
+            </form>
+            <div class="search-filters">
+                <button class="filter-btn active" onclick="filterAll()">Tous</button>
+                <button class="filter-btn" onclick="filterAnnouncements('promotions')">Promotions</button>
+                <button class="filter-btn" onclick="filterAnnouncements('formations')">Formations</button>
+                <button class="filter-btn" onclick="filterAnnouncements('evenements')">Événements</button>
+                <button class="filter-btn" onclick="filterAnnouncements('concours')">Concours</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Announcements Grid -->
+    <section class="announcements" id="announcements">
+        <h2>Toutes les Annonces</h2>
+        <div class="announcements-grid" id="announcementsGrid"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Gis Community System</h3>
+                <p>Votre partenaire de confiance pour tous vos besoins en services numériques.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/+242068702524" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Liens Rapides</h3>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home footer-contact-icon"></i>Accueil</a></li>
+                    <li><a href="annonce.html"><i class="fas fa-bullhorn footer-contact-icon"></i>Annonce</a></li>
+                    <li><a href="service.html"><i class="fas fa-cogs footer-contact-icon"></i>Service</a></li>
+                    <li><a href="apropos.html"><i class="fas fa-info-circle footer-contact-icon"></i>À propos</a></li>
+                    <li><a href="#contact"><i class="fas fa-envelope footer-contact-icon"></i>Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Nos Services</h3>
+                <ul>
+                    <li><a href="service.html"><i class="fas fa-globe footer-contact-icon"></i>Sites Web</a></li>
+                    <li><a href="service.html"><i class="fas fa-mobile-alt footer-contact-icon"></i>Applications Mobile</a></li>
+                    <li><a href="service.html"><i class="fas fa-laptop-code footer-contact-icon"></i>Applications Web</a></li>
+                    <li><a href="service.html"><i class="fas fa-chart-line footer-contact-icon"></i>SEO & Marketing</a></li>
+                    <li><a href="service.html"><i class="fas fa-database footer-contact-icon"></i>Data & Analytics</a></li>
+                    <li><a href="service.html"><i class="fas fa-graduation-cap footer-contact-icon"></i>Formation & Consulting</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li><a href="mailto:talianelouboundzi@gmail.com"><i class="fas fa-envelope footer-contact-icon"></i>talianelouboundzi@gmail.com</a></li>
+                    <li><a href="tel:+237681634866"><i class="fas fa-phone footer-contact-icon"></i>+237 681634866</a></li>
+                    <li><a href="https://wa.me/+242068702524"><i class="fab fa-whatsapp footer-contact-icon"></i>+242 068702524 (WhatsApp)</a></li>
+                    <li><a href="#"><i class="fas fa-map-marker-alt footer-contact-icon"></i>Douala, Cameroun</a></li>
+                </ul>
+                <div class="newsletter">
+                    <p>Abonnez-vous à notre newsletter</p>
+                    <form class="newsletter-form" id="newsletterForm">
+                        <input type="email" placeholder="Votre email" required>
+                        <button type="submit">S'abonner</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 GIS Community System. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Chatbot -->
+    <div class="chatbot-container">
+        <button class="chatbot-toggle" onclick="toggleChatbot()">
+            <img src="sara.jpeg" alt="Sarah AI" class="chatbot-avatar" onerror="this.src='https://via.placeholder.com/70x70?text=Sarah'">
+            <div class="chatbot-notification" id="chatNotification">1</div>
+        </button>
+        
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <img src="sara.jpeg" alt="Sarah AI" class="chatbot-header-avatar" onerror="this.src='https://via.placeholder.com/50x50?text=Sarah'">
+                <div class="chatbot-header-info">
+                    <h3>Sarah AI</h3>
+                    <p>Assistant virtuel de GCS</p>
+                </div>
+                <button class="chatbot-close" onclick="toggleChatbot()">×</button>
+            </div>
+            
+            <div class="chatbot-quick-questions">
+                <button class="chatbot-quick-question" onclick="quickQuestion('annonces')">Annonces</button>
+                <button class="chatbot-quick-question" onclick="quickQuestion('formations')">Formations</button>
+                <button class="chatbot-quick-question" onclick="quickQuestion('concours')">Concours</button>
+                <button class="chatbot-quick-question" onclick="quickQuestion('contact')">Contact</button>
+                <button class="chatbot-quick-question" onclick="quickQuestion('santé')">Comment ça va?</button>
+            </div>
+            
+            <div class="chatbot-messages" id="chatMessages">
+                <div class="chatbot-message bot">
+                    Bonjour ! Je suis Sarah, l'assistante virtuelle de Gis Community System.<br><br>
+                    Je peux vous aider à trouver des annonces, formations et événements. Que recherchez-vous ?
+                </div>
+            </div>
+            
+            <div class="chatbot-input-container">
+                <input type="text" class="chatbot-input" id="chatInput" placeholder="Posez votre question..." onkeypress="handleChatInput(event)">
+                <button class="chatbot-send" onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Données des annonces
+        const announcements = [
+            {
+                id: 1,
+                title: "Formation Spéciale pour Femmes en Design Graphique",
+                description: "Programme exclusif de formation en design graphique pour femmes. Apprenez les bases du design, la création de visuels percutants et lancez votre carrière dans le digital. Formation animée par des expertes du secteur.",
+                category: "formations",
+                date: "Avril 2026",
+                important: true,
+                image: "FORMA.JPG"
+            },
+            {
+                id: 2,
+                title: "GCS participe au Challenge App Afrique 2026",
+                description: "Nous sommes fiers d'annoncer notre participation au prestigieux Challenge App Afrique 2026. Notre équipe présentera une solution innovante pour le développement du continent. Suivez notre parcours et soutenez-nous !",
+                category: "concours",
+                date: "Mai 2026",
+                important: true,
+                image: "challenge.png"
+            },
+            {
+                id: 3,
+                title: "L'événemente",
+                description: "Profitez de notre offre spéciale printemps avec 30% de réduction sur tous les projets de sites vitrines. Offre valable jusqu'au 30 juin.",
+                category: "promotions",
+                date: "Mars 2026",
+                important: true,
+                image: " adsense.jpg"
+            },
+            {
+                id: 4,
+                title: "Digital Africa en 2026",
+                description: "En 2026, Digital Africa renforce son dispositif de financement pour les jeunes pousses technologiques africaines. Opportunités de financement pour les startups innovantes.",
+                category: "evenements",
+                date: "Mars 2026",
+                important: false,
+                image: "download (1).jpg"
+            }
+        ];
+
+        // Fonctions du menu burger
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            const menuToggle = document.querySelector('.menu-toggle');
+            navMenu.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+            document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : 'auto';
+        }
+
+        function closeMenu() {
+            const navMenu = document.getElementById('navMenu');
+            const menuToggle = document.querySelector('.menu-toggle');
+            navMenu.classList.remove('active');
+            menuToggle.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // WhatsApp function
+        function openWhatsApp() {
+            const phoneNumber = "+242068702524";
+            const message = "Bonjour, je viens de la page Annonces de GIS Community System et je souhaite avoir plus d'informations.";
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappURL, '_blank');
+        }
+
+        // Scroll to announcements
+        function scrollToAnnouncements() {
+            document.getElementById('announcements').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        // Carousel functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dots = document.querySelectorAll('.carousel-dot');
+        const track = document.getElementById('carouselTrack');
+        const totalSlides = slides.length;
+
+        function updateCarousel() {
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
+        }
+
+        // Auto-advance carousel
+        let carouselInterval = setInterval(nextSlide, 5000);
+
+        // Pause carousel on hover
+        const carousel = document.querySelector('.carousel');
+        if (carousel) {
+            carousel.addEventListener('mouseenter', () => {
+                clearInterval(carouselInterval);
+            });
+            carousel.addEventListener('mouseleave', () => {
+                carouselInterval = setInterval(nextSlide, 5000);
+            });
+        }
+
+        // Display announcements
+        function displayAnnouncements(filter = 'all') {
+            const grid = document.getElementById('announcementsGrid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            
+            let filteredAnnouncements = announcements;
+            
+            if (filter !== 'all') {
+                filteredAnnouncements = announcements.filter(ann => ann.category === filter);
+            }
+            
+            filteredAnnouncements.forEach(announcement => {
+                const card = document.createElement('div');
+                card.className = 'announcement-card';
+                card.innerHTML = `
+                    <img src="${announcement.image}" alt="${announcement.title}" class="announcement-image" onerror="this.src='https://via.placeholder.com/400x250?text=GCS'">
+                    <div class="announcement-content">
+                        <span class="announcement-category">${getCategoryName(announcement.category)}</span>
+                        ${announcement.important ? '<span style="color: #ff4757; font-size: 0.9rem; margin-left: 10px;"><i class="fas fa-exclamation-circle"></i> Important</span>' : ''}
+                        <h3>${announcement.title}</h3>
+                        <p>${announcement.description}</p>
+                        <div class="announcement-date">
+                            <i class="far fa-calendar"></i> ${announcement.date}
+                        </div>
+                        <button class="announcement-btn" onclick="showAnnouncementDetails(${announcement.id})">
+                            <i class="fas fa-eye"></i> Voir les détails
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function getCategoryName(category) {
+            const categories = {
+                'promotions': 'Promotion',
+                'formations': 'Formation',
+                'evenements': 'Événement',
+                'concours': 'Concours'
+            };
+            return categories[category] || category;
+        }
+
+        function filterAnnouncements(category) {
+            displayAnnouncements(category);
+            updateFilterButtons(category);
+        }
+
+        function filterAll() {
+            displayAnnouncements('all');
+            updateFilterButtons('all');
+        }
+
+        function updateFilterButtons(activeCategory) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase() === activeCategory || 
+                    (activeCategory === 'all' && btn.textContent === 'Tous')) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        function searchAnnouncements(event) {
+            event.preventDefault();
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const grid = document.getElementById('announcementsGrid');
+            if (!grid) return;
+            
+            const filtered = announcements.filter(ann => 
+                ann.title.toLowerCase().includes(searchTerm) || 
+                ann.description.toLowerCase().includes(searchTerm)
+            );
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div style="text-align: center; grid-column: 1/-1; padding: 3rem;">
+                        <i class="fas fa-search" style="font-size: 3rem; color: #cbd5e1; margin-bottom: 1rem;"></i>
+                        <h3 style="color: #64748b;">Aucune annonce trouvée</h3>
+                        <p style="color: #94a3b8;">Essayez avec d'autres mots-clés</p>
+                    </div>
+                `;
+            } else {
+                displayFilteredAnnouncements(filtered);
+            }
+        }
+
+        function displayFilteredAnnouncements(filteredAnnouncements) {
+            const grid = document.getElementById('announcementsGrid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            
+            filteredAnnouncements.forEach(announcement => {
+                const card = document.createElement('div');
+                card.className = 'announcement-card';
+                card.innerHTML = `
+                    <img src="${announcement.image}" alt="${announcement.title}" class="announcement-image" onerror="this.src='https://via.placeholder.com/400x250?text=GCS'">
+                    <div class="announcement-content">
+                        <span class="announcement-category">${getCategoryName(announcement.category)}</span>
+                        ${announcement.important ? '<span style="color: #ff4757; font-size: 0.9rem; margin-left: 10px;"><i class="fas fa-exclamation-circle"></i> Important</span>' : ''}
+                        <h3>${announcement.title}</h3>
+                        <p>${announcement.description}</p>
+                        <div class="announcement-date">
+                            <i class="far fa-calendar"></i> ${announcement.date}
+                        </div>
+                        <button class="announcement-btn" onclick="showAnnouncementDetails(${announcement.id})">
+                            <i class="fas fa-eye"></i> Voir les détails
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function showAnnouncementDetails(id) {
+            const announcement = announcements.find(ann => ann.id === id);
+            if (announcement) {
+                alert(`Détails de l'annonce:\n\n${announcement.title}\n\n${announcement.description}\n\nDate: ${announcement.date}\nCatégorie: ${getCategoryName(announcement.category)}\n${announcement.important ? '⚠️ Annonce importante' : ''}\n\nPour plus d'informations, contactez-nous sur WhatsApp!`);
+                openWhatsApp();
+            }
+        }
+
+        // Function to animate counting numbers
+        function animateNumbers() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            
+            statNumbers.forEach(stat => {
+                const target = parseInt(stat.getAttribute('data-target'));
+                const duration = 2000;
+                const step = target / (duration / 16);
+                let current = 0;
+                
+                const updateNumber = () => {
+                    current += step;
+                    if (current < target) {
+                        stat.textContent = Math.round(current);
+                        requestAnimationFrame(updateNumber);
+                    } else {
+                        stat.textContent = target;
+                    }
+                };
+                
+                updateNumber();
+            });
+        }
+
+        // Chatbot functionality
+        function toggleChatbot() {
+            const chatbotWindow = document.getElementById('chatbotWindow');
+            const notification = document.getElementById('chatNotification');
+            
+            if (chatbotWindow) {
+                chatbotWindow.classList.toggle('active');
+            }
+            if (notification) {
+                notification.style.display = 'none';
+            }
+        }
+
+        function quickQuestion(type) {
+            let question = "";
+            switch(type) {
+                case 'annonces':
+                    question = "Quelles sont les dernières annonces ?";
+                    break;
+                case 'formations':
+                    question = "Quelles formations sont disponibles ?";
+                    break;
+                case 'concours':
+                    question = "Parlez-moi du Challenge App Afrique";
+                    break;
+                case 'contact':
+                    question = "Comment vous contacter ?";
+                    break;
+                case 'santé':
+                    question = "Comment ça va ?";
+                    break;
+            }
+            
+            const input = document.getElementById('chatInput');
+            if (input) {
+                input.value = question;
+                sendMessage();
+            }
+        }
+
+        function handleChatInput(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            if (!input) return;
+            
+            const message = input.value.trim();
+            
+            if (message === "") return;
+            
+            addUserMessage(message);
+            input.value = "";
+            
+            setTimeout(() => {
+                generateBotResponse(message.toLowerCase());
+            }, 500);
+        }
+
+        function addUserMessage(message) {
+            const chatMessages = document.getElementById('chatMessages');
+            if (!chatMessages) return;
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chatbot-message user';
+            messageDiv.textContent = message;
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        function addBotMessage(message, isWhatsAppRedirect = false) {
+            const chatMessages = document.getElementById('chatMessages');
+            if (!chatMessages) return;
+            
+            if (isWhatsAppRedirect) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'chatbot-message whatsapp-redirect';
+                messageDiv.innerHTML = `<i class="fab fa-whatsapp"></i> ${message}`;
+                messageDiv.onclick = () => openWhatsApp();
+                chatMessages.appendChild(messageDiv);
+            } else {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'chatbot-message bot';
+                messageDiv.textContent = message;
+                chatMessages.appendChild(messageDiv);
+            }
+            
+            scrollToBottom();
+        }
+
+        function showTypingIndicator() {
+            const chatMessages = document.getElementById('chatMessages');
+            if (!chatMessages) return;
+            
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'chatbot-typing';
+            typingDiv.innerHTML = '<span></span><span></span><span></span>';
+            typingDiv.id = 'typingIndicator';
+            chatMessages.appendChild(typingDiv);
+            scrollToBottom();
+        }
+
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        function scrollToBottom() {
+            const chatMessages = document.getElementById('chatMessages');
+            if (chatMessages) {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        }
+
+        function generateBotResponse(userMessage) {
+            showTypingIndicator();
+            
+            setTimeout(() => {
+                hideTypingIndicator();
+                
+                let response = "";
+                let redirectToWhatsApp = false;
+                
+                if (userMessage.includes("bonjour") || userMessage.includes("salut")) {
+                    response = "Bonjour ! Je suis ravie de vous aider avec nos annonces. Que recherchez-vous spécifiquement ?";
+                }
+                else if (userMessage.includes("annonce") || userMessage.includes("actualité")) {
+                    response = "Voici nos dernières annonces :\n• Formation Femme en Design Graphique\n• Challenge App Afrique 2026\n• Promotion Printemps -30%\n\nQuelle annonce vous intéresse ?";
+                }
+                else if (userMessage.includes("formation") || userMessage.includes("apprendre")) {
+                    response = "Nos formations disponibles :\n• Design Graphique pour Femmes (Avril 2026)\n• Développement Web (Mai 2026)\n• Marketing Digital (Juin 2026)\n\nInscriptions ouvertes !";
+                }
+                else if (userMessage.includes("challenge") || userMessage.includes("concours") || userMessage.includes("app afrique")) {
+                    response = "Le Challenge App Afrique 2026 est un concours majeur pour les startups tech africaines. GCS y participe avec une solution innovante ! Restez connectés pour suivre notre aventure.";
+                }
+                else if (userMessage.includes("promo") || userMessage.includes("offre")) {
+                    response = "Promotions en cours :\n• -30% sur sites vitrines (jusqu'au 30 juin)\n• Pack e-commerce à 150.000 FCFA\n\nDétails sur notre page annonces !";
+                }
+                else if (userMessage.includes("comment ça va") || userMessage.includes("santé")) {
+                    response = "Je vais très bien, merci ! Toujours heureuse d'aider à trouver les bonnes annonces. Et vous ?";
+                }
+                else if (userMessage.includes("contact") || userMessage.includes("téléphone")) {
+                    response = "Contactez-nous :\n• WhatsApp : +242 068702524\n• Email : talianelouboundzi@gmail.com\n• Téléphone : +237 681634866\n\nWhatsApp pour réponse rapide !";
+                    redirectToWhatsApp = true;
+                }
+                else if (userMessage.includes("merci")) {
+                    response = "De rien ! N'hésitez pas si vous avez d'autres questions sur nos annonces.";
+                }
+                else if (userMessage.includes("au revoir") || userMessage.includes("bye")) {
+                    response = "Au revoir ! Consultez régulièrement nos annonces pour ne rien manquer.";
+                }
+                else {
+                    response = "Je peux vous aider avec nos annonces, formations et événements. Posez-moi une question spécifique ou contactez-nous sur WhatsApp pour plus de détails !";
+                    redirectToWhatsApp = true;
+                }
+                
+                addBotMessage(response);
+                
+                if (redirectToWhatsApp) {
+                    setTimeout(() => {
+                        addBotMessage("Cliquez ici pour discuter directement avec notre équipe !", true);
+                    }, 1000);
+                }
+            }, 1500);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease-in';
+            
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+
+            // Display announcements
+            displayAnnouncements();
+
+            // Animate numbers when they come into view
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateNumbers();
+                        observer.disconnect();
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            const infoSection = document.querySelector('.info-section');
+            if (infoSection) {
+                observer.observe(infoSection);
+            }
+
+            // Show chatbot notification after 3 seconds
+            setTimeout(() => {
+                const notification = document.getElementById('chatNotification');
+                if (notification) {
+                    notification.style.display = 'flex';
+                }
+            }, 3000);
+
+            // Newsletter form
+            const newsletterForm = document.getElementById('newsletterForm');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const email = this.querySelector('input').value;
+                    if (validateEmail(email)) {
+                        alert('Merci de votre inscription à notre newsletter annonces !');
+                        this.reset();
+                    } else {
+                        alert('Veuillez entrer une adresse email valide.');
+                    }
+                });
+            }
+
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                        closeMenu();
+                    }
+                });
+            });
+        });
+
+        // Email validation
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+    </script>
+</body>
+</html>
